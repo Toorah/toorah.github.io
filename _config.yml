@@ -1,0 +1,12 @@
+# GitHub Pages builds this with Jekyll on every push to master.
+# Pages are Markdown with a little front matter; see README.md.
+title: ATK Interactive
+description: Small, offline-first study apps for Android.
+# Contact address, each half reversed so crawlers reading the repo or the pages can't
+# harvest it; _includes/email.html and the script in _layouts/default.html put it together.
+email:
+  u: ved.haroot
+  d: moc.liamg
+markdown: kramdown
+exclude:
+  - README.md

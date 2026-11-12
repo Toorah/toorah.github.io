@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% if page.title and page.url != "/" %}{{ page.title }} · {% endif %}{{ site.title }}</title>
+  <meta name="description" content="{{ page.description | default: site.description }}">
+  {% if page.icon %}<link rel="icon" href="{{ page.icon | relative_url }}">{% endif %}
+  <style>
+    :root {
+      --paper: #f7f6f2; --surface: #ffffff; --ink: #1d2027; --ink2: #555b68; --line: #e2e2dc;
+      --accent: {{ page.accent | default: "#2f4ca0" }};
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --paper: #12141a; --surface: #1a1d25; --ink: #e8e9ee; --ink2: #a8adba; --line: #2b2f3b; }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--paper); color: var(--ink);
+      font: 17px/1.6 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    }
+    .wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+    header.site { padding: 20px 0; border-bottom: 1px solid var(--line); }
+    header.site a { color: var(--ink); text-decoration: none; font-weight: 700; }
+    header.site nav { float: right; }
+    header.site nav a { font-weight: 500; color: var(--ink2); margin-left: 16px; }
+    main { padding: 32px 0 48px; }
+    h1 { font-size: 2rem; line-height: 1.2; margin: 0 0 8px; }
+    h2 { font-size: 1.25rem; margin: 32px 0 8px; }
+    a { color: var(--accent); }
+    .app-head { display: flex; gap: 16px; align-items: center; margin-bottom: 16px; }
+    .app-head img { width: 72px; height: 72px; border-radius: 18px; flex: none; }
+    .apps { list-style: none; padding: 0; display: grid; gap: 12px; }
+    .apps li a {
+      display: flex; gap: 14px; align-items: center; padding: 14px; text-decoration: none;
+      color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 14px;
+    }
+    .apps img { width: 56px; height: 56px; border-radius: 14px; flex: none; }
+    .apps span { color: var(--ink2); display: block; font-size: .95rem; }
+    footer { border-top: 1px solid var(--line); padding: 20px 0 40px; color: var(--ink2); font-size: .9rem; }
+    footer a { color: var(--ink2); }
+  </style>
+</head>
+<body>
+  <header class="site"><div class="wrap">
+    <a href="{{ '/' | relative_url }}">{{ site.title }}</a>
+    {% if page.app %}<nav>
+      <a href="{{ '/' | append: page.app | append: '/' | relative_url }}">{{ page.app_name }}</a>
+      <a href="{{ '/' | append: page.app | append: '/privacy/' | relative_url }}">Privacy</a>
+    </nav>{% endif %}
+  </div></header>
+  <main><div class="wrap">
+    {{ content }}
+  </div></main>
+  <footer><div class="wrap">
+    © {{ 'now' | date: "%Y" }} {{ site.title }} · {% include email.html %}
+  </div></footer>
+  <script>
+    // The contact address is kept out of the HTML (and the repo) so crawlers can't
+    // harvest it: both halves are stored reversed in _config.yml and joined here.
+    document.querySelectorAll("a.js-email").forEach(function (a) {
+      var flip = function (s) { return s.split("").reverse().join(""); };
+      var address = flip(a.dataset.u) + String.fromCharCode(64) + flip(a.dataset.d);
+      a.href = "mai" + "lto:" + address;
+      a.textContent = address;
+    });
+  </script>
+</body>
+</html>
